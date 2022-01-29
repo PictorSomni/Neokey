@@ -39,6 +39,8 @@ sequence_2 = (
    {'keys': Keycode.ENTER, 'delay': 0.1}
 )
 
+sequence_3 = [Keycode.ALT, Keycode.F4]
+
 # our helper function will press the keys themselves
 def make_keystrokes(keys, delay):
     if isinstance(keys, str):  # If it's a string...
@@ -58,6 +60,7 @@ while True:
         {'keys': Keycode.HOME, 'delay': 0.1},  # give it a moment to launch!
         {'keys': "{:02}_\n".format(index), 'delay': 0.1}
     )
+
     if touch.value and not touch_state:
         pixel.fill((0, 128, 255))
         touch_state = True
@@ -94,10 +97,12 @@ while True:
                 else :
                     index -= 1
 
+            elif counter == 4 :
+                make_keystrokes(sequence_3, delay=0)
+
 
     if not touch.value and touch_state:
         print("no touch")
         touch_state = False
         counter = 0
         pixel.fill((255, 0, 255))
-                
