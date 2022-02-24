@@ -92,8 +92,9 @@ while True:
         print("no touch")
         print(counter)
         touch_state = False
-        for k in sequence:
-            make_keystrokes(k['keys'], k['delay'])
+        if counter > 0 :
+            for k in sequence:
+                make_keystrokes(k['keys'], k['delay'])
         counter = 0
         pixel.fill((255, 0, 255))
 
