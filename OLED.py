@@ -78,8 +78,8 @@ color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
 color_palette = displayio.Palette(1)
 color_palette[0] = 0xFFFFFF  # White
 
-text = "LE FUTUR"
-text_area = label.Label(terminalio.FONT, text=text, scale=2, color=0xFFFFFF, x=21, y=30)
+text = "STUDIO C"
+text_area = label.Label(terminalio.FONT, text=text, scale=2, color=0xFFFFFF, x=18, y=30)
 group.append(text_area)
 
 index = 1
@@ -128,9 +128,9 @@ while True :
     ## BOTH BUTTONS PRESSED
     if not pin_b.value and not pin_c.value :
         text_area.scale = 3
-        text_area.x = 21
+        text_area.x = 3
         text_area.y = 28
-        text_area.text = "DELETE"
+        text_area.text = "ANNULER"
         # wifi_sprite.y = -21
 
         # result = True
@@ -149,9 +149,9 @@ while True :
             index -= 1
 
         text_area.scale = 2
-        text_area.x = 21
+        text_area.x = 18
         text_area.y = 30
-        text_area.text = "LE FUTUR"
+        text_area.text = "STUDIO C"
 
 ################################################
 
@@ -160,10 +160,10 @@ while True :
         pixels.fill((255, 0, 255))
         button_c_state = True
 
-        text_area.scale = 3
-        text_area.x = 3
+        text_area.scale = 2
+        text_area.x = 6
         text_area.y = 30
-        text_area.text = "ITERATE"
+        text_area.text = "CALENDRIER"
         while not pin_c.value :
             if not pin_b.value :
                 counter += 1
@@ -182,9 +182,9 @@ while True :
             index += 1
 
         text_area.scale = 2
-        text_area.x = 21
+        text_area.x = 18
         text_area.y = 30
-        text_area.text = "LE FUTUR"
+        text_area.text = "STUDIO C"
         button_c_state = False
         counter = 0
 
@@ -195,10 +195,10 @@ while True :
         pixels.fill((0, 85, 255))
         button_b_state = True
 
-        text_area.scale = 3
-        text_area.x = 3
+        text_area.scale = 2
+        text_area.x = 4
         text_area.y = 30
-        text_area.text = "COUNTER"
+        text_area.text = "IMPRESSION"
         while not pin_b.value :
             button_c.update()
             if button_c.fell  :
@@ -218,9 +218,9 @@ while True :
                 make_keystrokes(k['keys'], k['delay'])
 
         text_area.scale = 2
-        text_area.x = 21
+        text_area.x = 18
         text_area.y = 30
-        text_area.text = "LE FUTUR"
+        text_area.text = "STUDIO C"
         button_b_state = False
         counter = 0
 
