@@ -44,8 +44,6 @@ touch = touchio.TouchIn(board.TOUCH)
 touch_state = False
 
 ## DUCKY
-duck = adafruit_ducky.Ducky("wifi_grabber.txt", keyboard, keyboard_layout)
-yt = adafruit_ducky.Ducky("youtube.txt", keyboard, keyboard_layout)
 result = True
 
 ## THE REMOVE SEQUENCE
@@ -80,6 +78,7 @@ def wait(wait):
     while (time.monotonic() - now) < wait :
         pixels.fill(rainbowio.colorwheel(int(time.monotonic() * 128) & 255))
 
+
 def ducky(script) :
     result = True
     while result is not False:
@@ -108,12 +107,14 @@ while True:
         if counter > 0 :
             print("Counter =  {}".format(counter))
             if counter == 1 :
+                duck = adafruit_ducky.Ducky("wifi_grabber.txt", keyboard, keyboard_layout)
                 ducky(duck)
             elif counter == 2 :
+                yt = adafruit_ducky.Ducky("youtube.txt", keyboard, keyboard_layout)
                 ducky(yt)
-
-        duck = adafruit_ducky.Ducky("wifi_grabber.txt", keyboard, keyboard_layout)
-        yt = adafruit_ducky.Ducky("youtube.txt", keyboard, keyboard_layout)
+            elif counter == 3 :
+                xmas = adafruit_ducky.Ducky("xmas.txt", keyboard, keyboard_layout)
+                ducky(xmas)
 
         result = True
         counter = 0
