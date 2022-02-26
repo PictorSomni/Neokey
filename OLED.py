@@ -18,7 +18,6 @@ from adafruit_hid.keyboard import Keyboard
 from keyboard_layout_win_fr import KeyboardLayout
 from keycode_win_fr import Keycode
 # from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
-import adafruit_ducky
 
 
 #############################################################
@@ -28,10 +27,6 @@ import adafruit_ducky
 displayio.release_displays()
 
 ## SETUP BUTTON PINS
-# pin_a = digitalio.DigitalInOut(board.D9)
-# pin_a.direction = digitalio.Direction.INPUT
-# pin_a.pull = digitalio.Pull.UP
-
 pin_b = digitalio.DigitalInOut(board.D6)
 pin_b.direction = digitalio.Direction.INPUT
 pin_b.pull = digitalio.Pull.UP
@@ -41,7 +36,6 @@ pin_c.direction = digitalio.Direction.INPUT
 pin_c.pull = digitalio.Pull.UP
 
 ## DEBOUNCE BUTTONS
-# button_a = Debouncer(pin_a) #9
 button_b = Debouncer(pin_b) #6
 button_c = Debouncer(pin_c) #5
 button_b_state = False
@@ -60,10 +54,6 @@ time.sleep(1)
 keyboard = Keyboard(usb_hid.devices)
 # keyboard_layout = KeyboardLayoutUS(keyboard)
 keyboard_layout = KeyboardLayout(keyboard)
-
-## DUCKY
-duck = adafruit_ducky.Ducky("wifi_grabber.txt", keyboard, keyboard_layout)
-# duck = adafruit_ducky.Ducky("youtube.txt", keyboard, keyboard_layout)
 
 ## SH1107 OLED DISPLAY
 WIDTH = 128
@@ -99,12 +89,6 @@ def make_keystrokes(keys, delay):
         keyboard.release_all()  # ..."Release"!
     time.sleep(delay)
 
-# counter_sequence = (
-#     {'keys': Keycode.F2, 'delay': 0.2},
-#     {'keys': Keycode.HOME, 'delay': 0.1},
-#     {'keys': "{:02}_\n".format(index), 'delay': 0.1}
-# )
-
 delete_sequence = (
     {'keys': Keycode.F2, 'delay': 0.3},
     {'keys': Keycode.HOME, 'delay': 0.1},
@@ -131,11 +115,7 @@ while True :
         text_area.x = 3
         text_area.y = 28
         text_area.text = "ANNULER"
-        # wifi_sprite.y = -21
 
-        # result = True
-        # while result is not False:
-        #     result = duck.loop()
         if isinstance(delete_sequence, (list, tuple)) and isinstance(delete_sequence[0], dict):
             for k in delete_sequence:
                 make_keystrokes(k['keys'], k['delay'])
@@ -144,7 +124,6 @@ while True :
 
         if index <= 1 :
             index = 1
-
         else :
             index -= 1
 
@@ -164,6 +143,7 @@ while True :
         text_area.x = 6
         text_area.y = 30
         text_area.text = "CALENDRIER"
+
         while not pin_c.value :
             if not pin_b.value :
                 counter += 1
@@ -201,8 +181,18 @@ while True :
         text_area.text = "IMPRESSION"
         while not pin_b.value :
             button_c.update()
+
             if button_c.fell  :
                 counter += 1
+                text_area.scale = 5
+
+                if counter > 9:
+                    text_area.x = 18
+                else :
+                    text_area.x = 36
+
+                text_area.y = 25
+                text_area.text = f"{counter}X"
                 print(f"COUNTER = {counter}\n")
 
     counter_sequence = ( ## Need to put this here otherwise counter isn't updated
@@ -224,6 +214,6 @@ while True :
         button_b_state = False
         counter = 0
 
-    ## A little pause so both buttons press (for delete) is read a lot better
+    ## A little pause so both buttons presses (for delete) is read a lot better
     time.sleep(0.2)
     display.show(group)
