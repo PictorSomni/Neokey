@@ -49,7 +49,7 @@ pixels.fill((0, 0, 0))
 i2c = board.I2C()
 display_bus = displayio.I2CDisplay(i2c, device_address=0x3C)
 
-## Keyboard
+## KEYBOARD
 time.sleep(1)
 keyboard = Keyboard(usb_hid.devices)
 # keyboard_layout = KeyboardLayoutUS(keyboard)
