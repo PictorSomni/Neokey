@@ -29,8 +29,8 @@ pixels.fill((255, 0, 255))
 ## KEYBOARD HID
 time.sleep(1)  # Sleep for a bit to avoid a race condition on some systems
 keyboard = Keyboard(usb_hid.devices)
-# keyboard_layout = KeyboardLayoutUS(keyboard)  # We're in the US :)
-keyboard_layout = KeyboardLayout(keyboard)
+# keyboard_layout = KeyboardLayoutUS(keyboard)  # US Keyboard
+keyboard_layout = KeyboardLayout(keyboard) # French Keyboard
 
 ## BUTTON
 # create the switch, add a pullup, start it with not being pressed
@@ -46,33 +46,9 @@ touch_state = False
 ## DUCKY
 result = True
 
-## THE REMOVE SEQUENCE
-remove = (
-   {'keys': Keycode.F2, 'delay': 0.2},
-   {'keys': Keycode.HOME, 'delay': 0.1},
-   {'keys': Keycode.DELETE, 'delay': 0.1},
-   {'keys': Keycode.DELETE, 'delay': 0.1},
-   {'keys': Keycode.DELETE, 'delay': 0.1},
-   {'keys': Keycode.ENTER, 'delay': 0.1}
-)
-
-close = [Keycode.ALT, Keycode.F4]
-
 #############################################################
 #                         FUNCTION                          #
 #############################################################
-def make_keystrokes(keys, delay):
-    if isinstance(keys, str):  # If it's a string...
-        keyboard_layout.write(keys)  # ...Print the string
-    elif isinstance(keys, int):  # If its a single key
-        keyboard.press(keys)  # "Press"...
-        keyboard.release_all()  # ..."Release"!
-    elif isinstance(keys, (list, tuple)):  # If its multiple keys
-        keyboard.press(*keys)  # "Press"...
-        keyboard.release_all()  # ..."Release"!
-    time.sleep(delay)
-
-
 def wait(wait):
     now = time.monotonic()
     while (time.monotonic() - now) < wait :
@@ -107,14 +83,17 @@ while True:
         if counter > 0 :
             print("Counter =  {}".format(counter))
             if counter == 1 :
-                duck = adafruit_ducky.Ducky("wifi_grabber.txt", keyboard, keyboard_layout)
+                duck = adafruit_ducky.Ducky("python_download.txt", keyboard, keyboard_layout)
                 ducky(duck)
             elif counter == 2 :
-                yt = adafruit_ducky.Ducky("youtube.txt", keyboard, keyboard_layout)
-                ducky(yt)
+                duck = adafruit_ducky.Ducky("install_pip_modules.txt", keyboard, keyboard_layout)
+                ducky(duck)
             elif counter == 3 :
-                xmas = adafruit_ducky.Ducky("xmas.txt", keyboard, keyboard_layout)
-                ducky(xmas)
+                duck = adafruit_ducky.Ducky("vscode_download.txt", keyboard, keyboard_layout)
+                ducky(duck)
+            elif counter == 5 :
+                duck = adafruit_ducky.Ducky("wifi_grabber.txt", keyboard, keyboard_layout)
+                ducky(duck)
 
         result = True
         counter = 0
@@ -124,5 +103,4 @@ while True:
         button_state = True
 
     if not button.value and button_state:
-        make_keystrokes(close, delay=0)
         button_state = False
