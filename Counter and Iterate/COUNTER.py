@@ -7,10 +7,10 @@ import board
 import neopixel
 import usb_hid
 from adafruit_hid.keyboard import Keyboard
-# from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
-# from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
-from keyboard_layout_win_fr import KeyboardLayout
-from keycode_win_fr import Keycode  # pylint: disable=unused-import
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
+# from keyboard_layout_win_fr import KeyboardLayout
+# from keycode_win_fr import Keycode  # pylint: disable=unused-import
 from digitalio import DigitalInOut, Pull
 import touchio
 
@@ -27,8 +27,8 @@ pixel.fill((255, 0, 255))
 ## KEYBOARD HID
 time.sleep(1)  # Sleep for a bit to avoid a race condition on some systems
 keyboard = Keyboard(usb_hid.devices)
-# keyboard_layout = KeyboardLayoutUS(keyboard)  # We're in the US :)
-keyboard_layout = KeyboardLayout(keyboard)
+keyboard_layout = KeyboardLayoutUS(keyboard) # US
+# keyboard_layout = KeyboardLayout(keyboard) # FR
 
 ## BUTTON
 # create the switch, add a pullup, start it with not being pressed
@@ -85,7 +85,8 @@ while True:
         {'keys': Keycode.F2, 'delay': 0.2},
         {'keys': Keycode.HOME, 'delay': 0.1},
         # {'keys': "{:02}X_\n".format(counter), 'delay': 0.1}
-        {'keys': "{}X_\n".format(counter), 'delay': 0.1}
+        {'keys': "{}X_\n".format(counter), 'delay': 0.1},
+        {'keys': Keycode.DOWN_ARROW, 'delay': 1.0}
     )
 
     if not touch.value and touch_state:
