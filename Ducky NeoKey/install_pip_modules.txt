@@ -5,5 +5,5 @@ DELAY 1500
 STRING powershell
 ENTER
 DELAY 1000
-STRING pip install --user pillow opencv-contrib-python numpy pygame pyside6 qt-material
+STRING pip install --user pillow opencv-contrib-python numpy rich pygame pyside6 qt-material
 ENTER
