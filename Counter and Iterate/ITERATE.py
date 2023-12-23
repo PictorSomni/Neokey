@@ -1,13 +1,23 @@
-"""NeoKey Trinkey Capacitive Touch and HID Keyboard example"""
+# -*- coding: utf-8 -*-
+#############################################################
+#                          IMPORTS                          #
+#############################################################
 import time
 import board
 import neopixel
 import usb_hid
 from adafruit_hid.keyboard import Keyboard
-# from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
-from keyboard_layout_win_fr import KeyboardLayout
-# from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
-from keycode_win_fr import Keycode  # pylint: disable=unused-import
+
+#________________________ US ________________________
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
+
+#________________________ FR ________________________
+# from keyboard_layout_win_fr import KeyboardLayout
+# from keycode_win_fr import Keycode  # pylint: disable=unused-import
+
+#____________________________________________________
+
 from digitalio import DigitalInOut, Pull
 import touchio
 
@@ -15,24 +25,34 @@ print("NeoKey Trinkey HID")
 index = 1
 counter = 0
 
-# create the pixel and turn it off
+## NEOPIXEL
 pixel = neopixel.NeoPixel(board.NEOPIXEL, 1, brightness=0.1)
 pixel.fill((255, 0, 255))
 
+## KEYBOARD HID
 time.sleep(1)  # Sleep for a bit to avoid a race condition on some systems
 keyboard = Keyboard(usb_hid.devices)
-# keyboard_layout = KeyboardLayoutUS(keyboard)  # We're in the US :)
-keyboard_layout = KeyboardLayout(keyboard)
 
+#________________________ US ________________________
+keyboard_layout = KeyboardLayoutUS(keyboard)
+
+#________________________ FR ________________________
+# keyboard_layout = KeyboardLayout(keyboard)
+
+#____________________________________________________
+
+## BUTTON
 # create the switch, add a pullup, start it with not being pressed
 button = DigitalInOut(board.SWITCH)
 button.switch_to_input(pull=Pull.DOWN)
 button_state = False
 
+## TOUCH
 # create the captouch element and start it with not touched
 touch = touchio.TouchIn(board.TOUCH)
 touch_state = False
 
+## THE REMOVE SEQUENCE
 sequence_2 = (
    {'keys': Keycode.F2, 'delay': 0.2},
    {'keys': Keycode.HOME, 'delay': 0.1},  # give it a moment to launch!
@@ -44,7 +64,9 @@ sequence_2 = (
 
 sequence_3 = [Keycode.ALT, Keycode.F4]
 
-# our helper function will press the keys themselves
+#############################################################
+#                         FUNCTION                          #
+#############################################################
 def make_keystrokes(keys, delay):
     if isinstance(keys, str):  # If it's a string...
         keyboard_layout.write(keys)  # ...Print the string
@@ -56,12 +78,14 @@ def make_keystrokes(keys, delay):
         keyboard.release_all()  # ..."Release"!
     time.sleep(delay)
 
-
+#############################################################
+#                         MAIN LOOP                         #
+#############################################################
 while True:
     sequence_1 = ( ## Need to put this here otherwise index isn't updated
         {'keys': Keycode.F2, 'delay': 0.2},
         {'keys': Keycode.HOME, 'delay': 0.1},  # give it a moment to launch!
-        {'keys': "{:02}_\n".format(index), 'delay': 0.1}
+        {'keys': "{:03}_\n".format(index), 'delay': 0.1}
     )
 
     if touch.value and not touch_state:
@@ -109,3 +133,5 @@ while True:
         touch_state = False
         counter = 0
         pixel.fill((255, 0, 255))
+
+    time.sleep(0.1)

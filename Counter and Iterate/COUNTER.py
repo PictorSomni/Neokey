@@ -9,12 +9,12 @@ import usb_hid
 from adafruit_hid.keyboard import Keyboard
 
 #________________________ US ________________________
-# from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
-# from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
 
 #________________________ FR ________________________
-from keyboard_layout_win_fr import KeyboardLayout
-from keycode_win_fr import Keycode  # pylint: disable=unused-import
+# from keyboard_layout_win_fr import KeyboardLayout
+# from keycode_win_fr import Keycode  # pylint: disable=unused-import
 
 #____________________________________________________
 
@@ -35,10 +35,10 @@ pixel.fill((255, 0, 255))
 time.sleep(1)  # Sleep for a bit to avoid a race condition on some systems
 keyboard = Keyboard(usb_hid.devices)
 #________________________ US ________________________
-# keyboard_layout = KeyboardLayoutUS(keyboard)  # We're in the US :)
+keyboard_layout = KeyboardLayoutUS(keyboard)
 
 #________________________ FR ________________________
-keyboard_layout = KeyboardLayout(keyboard)
+# keyboard_layout = KeyboardLayout(keyboard)
 
 #____________________________________________________
 
@@ -55,8 +55,9 @@ touch_state = False
 
 ## THE REMOVE SEQUENCE
 remove = (
-   {'keys': Keycode.F2, 'delay': 0.2},
-   {'keys': Keycode.HOME, 'delay': 0.1},
+#    {'keys': Keycode.F2, 'delay': 0.2}, # -> WINDOWS
+   {'keys': Keycode.ENTER, 'delay': 0.2}, # -> MAC
+   {'keys': Keycode.LEFT_ARROW, 'delay': 0.1},
    {'keys': Keycode.DELETE, 'delay': 0.1},
    {'keys': Keycode.DELETE, 'delay': 0.1},
    {'keys': Keycode.DELETE, 'delay': 0.1},
@@ -94,10 +95,12 @@ while True:
                 button_state = False
 
     sequence = ( ## Need to put this here otherwise index isn't updated
-        {'keys': Keycode.F2, 'delay': 0.2},
-        {'keys': Keycode.HOME, 'delay': 0.1},
+        # {'keys': Keycode.F2, 'delay': 0.2}, # -> WINDOWS
+        {'keys': Keycode.ENTER, 'delay': 0.2}, # -> MAC
+        {'keys': Keycode.LEFT_ARROW, 'delay': 0.1},
         # {'keys': "{:02}X_\n".format(counter), 'delay': 0.1}
-        {'keys': "{}X_\n".format(counter), 'delay': 0.1}
+        {'keys': "{}X_\n".format(counter), 'delay': 0.1},
+        {'keys': Keycode.DOWN_ARROW, 'delay': 0.1}
     )
 
     if not touch.value and touch_state:
@@ -117,3 +120,5 @@ while True:
         for k in remove:
             make_keystrokes(k['keys'], k['delay'])
         button_state = False
+    
+    time.sleep(0.1)
