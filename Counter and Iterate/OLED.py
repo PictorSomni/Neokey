@@ -15,10 +15,32 @@ from adafruit_display_text import label
 import adafruit_displayio_sh1107
 import usb_hid
 from adafruit_hid.keyboard import Keyboard
-from keyboard_layout_win_fr import KeyboardLayout
-from keycode_win_fr import Keycode
-# from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+from adafruit_hid.keyboard import Keyboard
 
+#________________________ US ________________________
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+from adafruit_hid.keycode import Keycode  # pylint: disable=unused-import
+
+#________________________ FR ________________________
+# from keyboard_layout_win_fr import KeyboardLayout
+# from keycode_win_fr import Keycode  # pylint: disable=unused-import
+
+#____________________________________________________
+
+
+#############################################################
+#                          CONSTANT                         #
+#############################################################
+DEFAULT_TEXT = "STUDIO C"
+
+#############################################################
+#                          FUNCTION                         #
+#############################################################
+def back_to_default ():
+    text_area.scale = 2
+    text_area.x = 18
+    text_area.y = 30
+    text_area.text = DEFAULT_TEXT
 
 #############################################################
 #                          CONTENT                          #
@@ -49,11 +71,16 @@ pixels.fill((0, 0, 0))
 i2c = board.I2C()
 display_bus = displayio.I2CDisplay(i2c, device_address=0x3C)
 
-## KEYBOARD
-time.sleep(1)
+## KEYBOARD HID
+time.sleep(1)  # Sleep for a bit to avoid a race condition on some systems
 keyboard = Keyboard(usb_hid.devices)
-# keyboard_layout = KeyboardLayoutUS(keyboard)
-keyboard_layout = KeyboardLayout(keyboard)
+#________________________ US ________________________
+keyboard_layout = KeyboardLayoutUS(keyboard)
+
+#________________________ FR ________________________
+# keyboard_layout = KeyboardLayout(keyboard)
+
+#____________________________________________________
 
 ## SH1107 OLED DISPLAY
 WIDTH = 128
@@ -68,7 +95,7 @@ color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
 color_palette = displayio.Palette(1)
 color_palette[0] = 0xFFFFFF  # White
 
-text = "STUDIO C"
+text = DEFAULT_TEXT
 text_area = label.Label(terminalio.FONT, text=text, scale=2, color=0xFFFFFF, x=18, y=30)
 group.append(text_area)
 
@@ -127,10 +154,7 @@ while True :
         else :
             index -= 1
 
-        text_area.scale = 2
-        text_area.x = 18
-        text_area.y = 30
-        text_area.text = "STUDIO C"
+        back_to_default ()
 
 ################################################
 
@@ -161,10 +185,7 @@ while True :
                 make_keystrokes(k['keys'], k['delay'])
             index += 1
 
-        text_area.scale = 2
-        text_area.x = 18
-        text_area.y = 30
-        text_area.text = "STUDIO C"
+        back_to_default ()
         button_c_state = False
         counter = 0
 
@@ -207,10 +228,7 @@ while True :
             for k in counter_sequence:
                 make_keystrokes(k['keys'], k['delay'])
 
-        text_area.scale = 2
-        text_area.x = 18
-        text_area.y = 30
-        text_area.text = "STUDIO C"
+        back_to_default ()
         button_b_state = False
         counter = 0
 
